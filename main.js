@@ -15,8 +15,12 @@ let movies = [{
 }]
 
 // select element from html template
+
 const dataPanel = document.querySelector('#data-panel')
-let htmlContent = `
+let htmlContent = ''
+function content() {
+
+  htmlContent += `
     <table class="table">
       <thead>
         <tr>
@@ -28,8 +32,8 @@ let htmlContent = `
       </thead>
       <tbody>
     `
-movies.forEach((data) => {
-  htmlContent += `
+  movies.forEach((data) => {
+    htmlContent += `
         <tr>
           <td>
             <img src = ${data.image} width = "70" class="img-thumbnail" >
@@ -45,11 +49,97 @@ movies.forEach((data) => {
           </td>
         </tr>
       `
-})
+  })
 
-htmlContent += `
+  htmlContent += `
       </tbody>
     </table>
   `
-
+}
+content()
 dataPanel.innerHTML = htmlContent
+
+
+//改變html rating內容
+
+// dataPanel.addEventListener('click',function(e){
+
+//   let rating = e.target.parentElement.lastElementChild
+
+
+
+//   if(e.target.classList.contains('fa-thumbs-up')){
+
+//     let newNum = Number(rating.innerText) + 1
+
+//     rating.innerText = newNum
+
+//   } else if(e.target.classList.contains('fa-thumbs-down')){
+
+//      let newNum = Number(rating.innerText) - 1
+
+//      rating.innerText = newNum
+//     
+//   }
+
+//   if (e.target.tagName === 'BUTTON') {
+//     let del = e.target.parentElement.parentElement
+//     del.remove()
+//     e.stopPropagation()
+//   }
+
+// },false)
+
+
+
+
+// 改變movies 內容
+
+dataPanel.addEventListener('click', function (e) {
+
+  if (e.target.classList.contains('fa-thumbs-up')) {
+
+    rate(e.target, 'fa-thumbs-up')
+
+  } else if (e.target.classList.contains('fa-thumbs-down')) {
+
+    rate(e.target, '')
+
+  }
+
+  if (e.target.tagName === 'BUTTON') {
+
+    let del = e.target.parentElement.parentElement
+
+    del.remove()
+
+    e.stopPropagation()
+
+  }
+
+}, false)
+
+
+
+function rate(z, y) {
+
+  let title = z.parentElement.previousElementSibling
+
+  let position = movies.findIndex(x => x.title === title.innerText)
+
+  let rating = z.parentElement.lastElementChild
+
+  if (y === 'fa-thumbs-up') {
+
+    movies[position].rating++
+
+  } else {
+
+    movies[position].rating--
+
+  }
+
+  rating.innerText = movies[position].rating
+}
+
+
